@@ -1,0 +1,764 @@
+[
+  {
+    "id": 1,
+    "subject": "ザクII",
+    "work": "機動戦士ガンダム",
+    "displayAnswer": "モビルスーツ（MS）",
+    "acceptedAnswers": [
+      "モビルスーツ",
+      "MS",
+      "Mobile Suit"
+    ],
+    "note": "「ザクII」は、『機動戦士ガンダム』において「モビルスーツ（MS）」に分類されます。"
+  },
+  {
+    "id": 2,
+    "subject": "ビグ・ザム",
+    "work": "機動戦士ガンダム",
+    "displayAnswer": "モビルアーマー（MA）",
+    "acceptedAnswers": [
+      "モビルアーマー",
+      "MA",
+      "Mobile Armor"
+    ],
+    "note": "「ビグ・ザム」は、『機動戦士ガンダム』において「モビルアーマー（MA）」に分類されます。"
+  },
+  {
+    "id": 3,
+    "subject": "CGSモビルワーカー",
+    "work": "機動戦士ガンダム 鉄血のオルフェンズ",
+    "displayAnswer": "モビルワーカー（MW）",
+    "acceptedAnswers": [
+      "モビルワーカー",
+      "MW",
+      "Mobile Worker"
+    ],
+    "note": "「CGSモビルワーカー」は、『機動戦士ガンダム 鉄血のオルフェンズ』において「モビルワーカー（MW）」に分類されます。"
+  },
+  {
+    "id": 4,
+    "subject": "VF-1 バルキリー",
+    "work": "超時空要塞マクロス",
+    "displayAnswer": "ヴァリアブル・ファイター（VF）",
+    "acceptedAnswers": [
+      "ヴァリアブルファイター",
+      "ヴァリアブル・ファイター",
+      "可変戦闘機",
+      "VF",
+      "Variable Fighter"
+    ],
+    "note": "「VF-1 バルキリー」は、『超時空要塞マクロス』において「ヴァリアブル・ファイター（VF）」に分類されます。"
+  },
+  {
+    "id": 5,
+    "subject": "MBR-04-Mk.VI トマホーク",
+    "work": "超時空要塞マクロス",
+    "displayAnswer": "デストロイド",
+    "acceptedAnswers": [
+      "デストロイド",
+      "Destroid"
+    ],
+    "note": "「MBR-04-Mk.VI トマホーク」は、『超時空要塞マクロス』において「デストロイド」に分類されます。"
+  },
+  {
+    "id": 6,
+    "subject": "スコープドッグ",
+    "work": "装甲騎兵ボトムズ",
+    "displayAnswer": "アーマードトルーパー（AT）",
+    "acceptedAnswers": [
+      "アーマードトルーパー",
+      "アーマード・トルーパー",
+      "AT",
+      "Armored Trooper",
+      "Armoured Trooper"
+    ],
+    "note": "「スコープドッグ」は、『装甲騎兵ボトムズ』において「アーマードトルーパー（AT）」に分類されます。"
+  },
+  {
+    "id": 7,
+    "subject": "ダグラム",
+    "work": "太陽の牙ダグラム",
+    "displayAnswer": "コンバットアーマー（CA）",
+    "acceptedAnswers": [
+      "コンバットアーマー",
+      "コンバット・アーマー",
+      "CA",
+      "Combat Armor"
+    ],
+    "note": "「ダグラム」は、『太陽の牙ダグラム』において「コンバットアーマー（CA）」に分類されます。"
+  },
+  {
+    "id": 8,
+    "subject": "ザブングル",
+    "work": "戦闘メカ ザブングル",
+    "displayAnswer": "ウォーカーマシン（WM）",
+    "acceptedAnswers": [
+      "ウォーカーマシン",
+      "ウォーカー・マシン",
+      "WM",
+      "Walker Machine"
+    ],
+    "note": "「ザブングル」は、『戦闘メカ ザブングル』において「ウォーカーマシン（WM）」に分類されます。"
+  },
+  {
+    "id": 9,
+    "subject": "エルガイム",
+    "work": "重戦機エルガイム",
+    "displayAnswer": "ヘビーメタル（HM）",
+    "acceptedAnswers": [
+      "ヘビーメタル",
+      "ヘビー・メタル",
+      "HM",
+      "Heavy Metal"
+    ],
+    "note": "「エルガイム」は、『重戦機エルガイム』において「ヘビーメタル（HM）」に分類されます。"
+  },
+  {
+    "id": 10,
+    "subject": "ダンバイン",
+    "work": "聖戦士ダンバイン",
+    "displayAnswer": "オーラバトラー（AB）",
+    "acceptedAnswers": [
+      "オーラバトラー",
+      "オーラ・バトラー",
+      "AB",
+      "Aura Battler"
+    ],
+    "note": "「ダンバイン」は、『聖戦士ダンバイン』において「オーラバトラー（AB）」に分類されます。"
+  },
+  {
+    "id": 11,
+    "subject": "ブブリィ",
+    "work": "聖戦士ダンバイン",
+    "displayAnswer": "オーラボンバー",
+    "acceptedAnswers": [
+      "オーラボンバー",
+      "オーラ・ボンバー",
+      "Aura Bomber"
+    ],
+    "note": "「ブブリィ」は、『聖戦士ダンバイン』において「オーラボンバー」に分類されます。"
+  },
+  {
+    "id": 12,
+    "subject": "ガラバ",
+    "work": "聖戦士ダンバイン",
+    "displayAnswer": "オーラファイター",
+    "acceptedAnswers": [
+      "オーラファイター",
+      "オーラ・ファイター",
+      "Aura Fighter"
+    ],
+    "note": "「ガラバ」は、『聖戦士ダンバイン』において「オーラファイター」に分類されます。"
+  },
+  {
+    "id": 13,
+    "subject": "ゼラーナ",
+    "work": "聖戦士ダンバイン",
+    "displayAnswer": "オーラシップ",
+    "acceptedAnswers": [
+      "オーラシップ",
+      "オーラ・シップ",
+      "Aura Ship"
+    ],
+    "note": "「ゼラーナ」は、『聖戦士ダンバイン』において「オーラシップ」に分類されます。"
+  },
+  {
+    "id": 14,
+    "subject": "バイファム",
+    "work": "銀河漂流バイファム",
+    "displayAnswer": "ラウンドバーニアン（RV）",
+    "acceptedAnswers": [
+      "ラウンドバーニアン",
+      "ラウンド・バーニアン",
+      "RV",
+      "Round Vernian"
+    ],
+    "note": "「バイファム」は、『銀河漂流バイファム』において「ラウンドバーニアン（RV）」に分類されます。"
+  },
+  {
+    "id": 15,
+    "subject": "ドラグナー1",
+    "work": "機甲戦記ドラグナー",
+    "displayAnswer": "メタルアーマー（MA）",
+    "acceptedAnswers": [
+      "メタルアーマー",
+      "メタル・アーマー",
+      "MA",
+      "Metal Armor"
+    ],
+    "note": "「ドラグナー1」は、『機甲戦記ドラグナー』において「メタルアーマー（MA）」に分類されます。"
+  },
+  {
+    "id": 16,
+    "subject": "レイズナー",
+    "work": "蒼き流星SPTレイズナー",
+    "displayAnswer": "SPT",
+    "acceptedAnswers": [
+      "SPT"
+    ],
+    "note": "「レイズナー」は、『蒼き流星SPTレイズナー』において「SPT」に分類されます。"
+  },
+  {
+    "id": 17,
+    "subject": "イングラム1号機",
+    "work": "機動警察パトレイバー",
+    "displayAnswer": "レイバー",
+    "acceptedAnswers": [
+      "レイバー",
+      "Labor"
+    ],
+    "note": "「イングラム1号機」は、『機動警察パトレイバー』において「レイバー」に分類されます。"
+  },
+  {
+    "id": 18,
+    "subject": "雷電",
+    "work": "ガサラキ",
+    "displayAnswer": "タクティカルアーマー（TA）",
+    "acceptedAnswers": [
+      "タクティカルアーマー",
+      "タクティカル・アーマー",
+      "TA",
+      "Tactical Armor"
+    ],
+    "note": "「雷電」は、『ガサラキ』において「タクティカルアーマー（TA）」に分類されます。"
+  },
+  {
+    "id": 19,
+    "subject": "イシュタル",
+    "work": "ガサラキ",
+    "displayAnswer": "メタルフェイク（MF）",
+    "acceptedAnswers": [
+      "メタルフェイク",
+      "メタル・フェイク",
+      "MF",
+      "Metal Fake"
+    ],
+    "note": "「イシュタル」は、『ガサラキ』において「メタルフェイク（MF）」に分類されます。"
+  },
+  {
+    "id": 20,
+    "subject": "ガリアン",
+    "work": "機甲界ガリアン",
+    "displayAnswer": "機甲兵",
+    "acceptedAnswers": [
+      "機甲兵"
+    ],
+    "note": "「ガリアン」は、『機甲界ガリアン』において「機甲兵」に分類されます。"
+  },
+  {
+    "id": 21,
+    "subject": "キングゲイナー",
+    "work": "OVERMANキングゲイナー",
+    "displayAnswer": "オーバーマン",
+    "acceptedAnswers": [
+      "オーバーマン",
+      "Overman"
+    ],
+    "note": "「キングゲイナー」は、『OVERMANキングゲイナー』において「オーバーマン」に分類されます。"
+  },
+  {
+    "id": 22,
+    "subject": "ガチコ",
+    "work": "OVERMANキングゲイナー",
+    "displayAnswer": "シルエット・マシン",
+    "acceptedAnswers": [
+      "シルエットマシン",
+      "シルエット・マシン",
+      "Silhouette Machine"
+    ],
+    "note": "「ガチコ」は、『OVERMANキングゲイナー』において「シルエット・マシン」に分類されます。"
+  },
+  {
+    "id": 23,
+    "subject": "ランスロット",
+    "work": "コードギアス 反逆のルルーシュ",
+    "displayAnswer": "ナイトメアフレーム（KMF）",
+    "acceptedAnswers": [
+      "ナイトメアフレーム",
+      "ナイトメア・フレーム",
+      "KMF",
+      "Knightmare Frame"
+    ],
+    "note": "「ランスロット」は、『コードギアス 反逆のルルーシュ』において「ナイトメアフレーム（KMF）」に分類されます。"
+  },
+  {
+    "id": 24,
+    "subject": "アーバレスト",
+    "work": "フルメタル・パニック！",
+    "displayAnswer": "アーム・スレイブ（AS）",
+    "acceptedAnswers": [
+      "アームスレイブ",
+      "アーム・スレイブ",
+      "AS",
+      "Arm Slave"
+    ],
+    "note": "「アーバレスト」は、『フルメタル・パニック！』において「アーム・スレイブ（AS）」に分類されます。"
+  },
+  {
+    "id": 25,
+    "subject": "ニルヴァーシュ type ZERO",
+    "work": "交響詩篇エウレカセブン",
+    "displayAnswer": "LFO",
+    "acceptedAnswers": [
+      "LFO",
+      "Light Finding Operation"
+    ],
+    "note": "「ニルヴァーシュ type ZERO」は、『交響詩篇エウレカセブン』において「LFO」に分類されます。"
+  },
+  {
+    "id": 26,
+    "subject": "デルフィング",
+    "work": "ブレイク ブレイド",
+    "displayAnswer": "ゴゥレム",
+    "acceptedAnswers": [
+      "ゴゥレム",
+      "ゴーレム"
+    ],
+    "note": "「デルフィング」は、『ブレイク ブレイド』において「ゴゥレム」に分類されます。"
+  },
+  {
+    "id": 27,
+    "subject": "スレイプニール",
+    "work": "アルドノア・ゼロ",
+    "displayAnswer": "カタフラクト",
+    "acceptedAnswers": [
+      "カタフラクト",
+      "Kataphrakt"
+    ],
+    "note": "「スレイプニール」は、『アルドノア・ゼロ』において「カタフラクト」に分類されます。"
+  },
+  {
+    "id": 28,
+    "subject": "レギンレイヴ",
+    "work": "86―エイティシックス―",
+    "displayAnswer": "フェルドレス",
+    "acceptedAnswers": [
+      "フェルドレス",
+      "Feldreß",
+      "Feldress"
+    ],
+    "note": "「レギンレイヴ」は、『86―エイティシックス―』において「フェルドレス」に分類されます。"
+  },
+  {
+    "id": 29,
+    "subject": "イカルガ",
+    "work": "ナイツ＆マジック",
+    "displayAnswer": "幻晶騎士（シルエットナイト）",
+    "acceptedAnswers": [
+      "幻晶騎士",
+      "シルエットナイト",
+      "シルエット・ナイト",
+      "Silhouette Knight"
+    ],
+    "note": "「イカルガ」は、『ナイツ＆マジック』において「幻晶騎士（シルエットナイト）」に分類されます。"
+  },
+  {
+    "id": 30,
+    "subject": "タウバーン",
+    "work": "STAR DRIVER 輝きのタクト",
+    "displayAnswer": "サイバディ",
+    "acceptedAnswers": [
+      "サイバディ",
+      "Cybody"
+    ],
+    "note": "「タウバーン」は、『STAR DRIVER 輝きのタクト』において「サイバディ」に分類されます。"
+  },
+  {
+    "id": 31,
+    "subject": "RED FIVE",
+    "work": "銀河機攻隊 マジェスティックプリンス",
+    "displayAnswer": "AHSMB（アッシュ）",
+    "acceptedAnswers": [
+      "AHSMB",
+      "アッシュ"
+    ],
+    "note": "「RED FIVE」は、『銀河機攻隊 マジェスティックプリンス』において「AHSMB（アッシュ）」に分類されます。"
+  },
+  {
+    "id": 32,
+    "subject": "ストレリチア",
+    "work": "ダーリン・イン・ザ・フランキス",
+    "displayAnswer": "FRANXX（フランクス）",
+    "acceptedAnswers": [
+      "FRANXX",
+      "フランクス"
+    ],
+    "note": "「ストレリチア」は、『ダーリン・イン・ザ・フランキス』において「FRANXX（フランクス）」に分類されます。"
+  },
+  {
+    "id": 33,
+    "subject": "不知火",
+    "work": "マブラヴ オルタネイティヴ",
+    "displayAnswer": "戦術機（TSF）",
+    "acceptedAnswers": [
+      "戦術機",
+      "TSF",
+      "Tactical Surface Fighter"
+    ],
+    "note": "「不知火」は、『マブラヴ オルタネイティヴ』において「戦術機（TSF）」に分類されます。"
+  },
+  {
+    "id": 34,
+    "subject": "チェインバー",
+    "work": "翠星のガルガンティア",
+    "displayAnswer": "マシンキャリバー",
+    "acceptedAnswers": [
+      "マシンキャリバー",
+      "マシン・キャリバー",
+      "Machine Caliber"
+    ],
+    "note": "「チェインバー」は、『翠星のガルガンティア』において「マシンキャリバー」に分類されます。"
+  },
+  {
+    "id": 35,
+    "subject": "継衛",
+    "work": "シドニアの騎士",
+    "displayAnswer": "衛人（もりと）",
+    "acceptedAnswers": [
+      "衛人",
+      "もりと",
+      "モリト"
+    ],
+    "note": "「継衛」は、『シドニアの騎士』において「衛人（もりと）」に分類されます。"
+  },
+  {
+    "id": 36,
+    "subject": "グレイブ",
+    "work": "クロスアンジュ 天使と竜の輪舞",
+    "displayAnswer": "パラメイル",
+    "acceptedAnswers": [
+      "パラメイル",
+      "Para-mail",
+      "Paramail"
+    ],
+    "note": "「グレイブ」は、『クロスアンジュ 天使と竜の輪舞』において「パラメイル」に分類されます。"
+  },
+  {
+    "id": 37,
+    "subject": "インベル",
+    "work": "アイドルマスター XENOGLOSSIA",
+    "displayAnswer": "iDOL（Immortal Defender of Legatee）",
+    "acceptedAnswers": [
+      "iDOL",
+      "IDOL",
+      "アイドル",
+      "Immortal Defender of Legatee",
+      "イモータルディフェンダーオブレガシー",
+      "イモータル・ディフェンダー・オブ・レガシー"
+    ],
+    "note": "「インベル」は、『アイドルマスター XENOGLOSSIA』において「iDOL（Immortal Defender of Legatee）」に分類されます。"
+  },
+  {
+    "id": 38,
+    "subject": "ホワイトリリー",
+    "work": "グランベルム",
+    "displayAnswer": "アルマノクス",
+    "acceptedAnswers": [
+      "アルマノクス",
+      "Armanox"
+    ],
+    "note": "「ホワイトリリー」は、『グランベルム』において「アルマノクス」に分類されます。"
+  },
+  {
+    "id": 39,
+    "subject": "ムガ",
+    "work": "バック・アロウ",
+    "displayAnswer": "ブライハイト",
+    "acceptedAnswers": [
+      "ブライハイト",
+      "Briheight"
+    ],
+    "note": "「ムガ」は、『バック・アロウ』において「ブライハイト」に分類されます。"
+  },
+  {
+    "id": 40,
+    "subject": "ビッグトニー",
+    "work": "サクガン",
+    "displayAnswer": "マークボット",
+    "acceptedAnswers": [
+      "マークボット",
+      "マーク・ボット",
+      "Mark Bot"
+    ],
+    "note": "「ビッグトニー」は、『サクガン』において「マークボット」に分類されます。"
+  },
+  {
+    "id": 41,
+    "subject": "デイジーオーガ",
+    "work": "SYNDUALITY Noir",
+    "displayAnswer": "クレイドルコフィン",
+    "acceptedAnswers": [
+      "クレイドルコフィン",
+      "クレイドル・コフィン",
+      "Cradle Coffin"
+    ],
+    "note": "「デイジーオーガ」は、『SYNDUALITY Noir』において「クレイドルコフィン」に分類されます。"
+  },
+  {
+    "id": 42,
+    "subject": "ビッグオー",
+    "work": "THE ビッグオー",
+    "displayAnswer": "メガデウス",
+    "acceptedAnswers": [
+      "メガデウス",
+      "Megadeus"
+    ],
+    "note": "「ビッグオー」は、『THE ビッグオー』において「メガデウス」に分類されます。"
+  },
+  {
+    "id": 43,
+    "subject": "ラガン",
+    "work": "天元突破グレンラガン",
+    "displayAnswer": "ガンメン",
+    "acceptedAnswers": [
+      "ガンメン",
+      "Ganmen"
+    ],
+    "note": "「ラガン」は、『天元突破グレンラガン』において「ガンメン」に分類されます。"
+  },
+  {
+    "id": 44,
+    "subject": "ダン・オブ・サーズデイ",
+    "work": "ガン×ソード",
+    "displayAnswer": "ヨロイ",
+    "acceptedAnswers": [
+      "ヨロイ"
+    ],
+    "note": "「ダン・オブ・サーズデイ」は、『ガン×ソード』において「ヨロイ」に分類されます。"
+  },
+  {
+    "id": 45,
+    "subject": "龍神丸",
+    "work": "魔神英雄伝ワタル",
+    "displayAnswer": "魔神（マシン）",
+    "acceptedAnswers": [
+      "魔神",
+      "マシン"
+    ],
+    "note": "「龍神丸」は、『魔神英雄伝ワタル』において「魔神（マシン）」に分類されます。"
+  },
+  {
+    "id": 46,
+    "subject": "ガラダK7",
+    "work": "マジンガーZ",
+    "displayAnswer": "機械獣",
+    "acceptedAnswers": [
+      "機械獣"
+    ],
+    "note": "「ガラダK7」は、『マジンガーZ』において「機械獣」に分類されます。"
+  },
+  {
+    "id": 47,
+    "subject": "グラトニオス",
+    "work": "マジンガーZ",
+    "displayAnswer": "戦闘獣",
+    "acceptedAnswers": [
+      "戦闘獣"
+    ],
+    "note": "「グラトニオス」は、『マジンガーZ』において「戦闘獣」に分類されます。"
+  },
+  {
+    "id": 48,
+    "subject": "ギルギル",
+    "work": "UFOロボ グレンダイザー",
+    "displayAnswer": "円盤獣",
+    "acceptedAnswers": [
+      "円盤獣"
+    ],
+    "note": "「ギルギル」は、『UFOロボ グレンダイザー』において「円盤獣」に分類されます。"
+  },
+  {
+    "id": 49,
+    "subject": "キングゴリ",
+    "work": "UFOロボ グレンダイザー",
+    "displayAnswer": "ベガ獣",
+    "acceptedAnswers": [
+      "ベガ獣"
+    ],
+    "note": "「キングゴリ」は、『UFOロボ グレンダイザー』において「ベガ獣」に分類されます。"
+  },
+  {
+    "id": 50,
+    "subject": "サキ",
+    "work": "ゲッターロボ",
+    "displayAnswer": "メカザウルス",
+    "acceptedAnswers": [
+      "メカザウルス"
+    ],
+    "note": "「サキ」は、『ゲッターロボ』において「メカザウルス」に分類されます。"
+  },
+  {
+    "id": 51,
+    "subject": "メカ大輪鬼",
+    "work": "ゲッターロボG",
+    "displayAnswer": "百鬼メカ",
+    "acceptedAnswers": [
+      "百鬼メカ"
+    ],
+    "note": "「メカ大輪鬼」は、『ゲッターロボG』において「百鬼メカ」に分類されます。"
+  },
+  {
+    "id": 52,
+    "subject": "バストドン",
+    "work": "勇者ライディーン",
+    "displayAnswer": "化石獣",
+    "acceptedAnswers": [
+      "化石獣"
+    ],
+    "note": "「バストドン」は、『勇者ライディーン』において「化石獣」に分類されます。"
+  },
+  {
+    "id": 53,
+    "subject": "豪雷巨烈獣レーザル",
+    "work": "勇者ライディーン",
+    "displayAnswer": "巨烈獣",
+    "acceptedAnswers": [
+      "巨烈獣"
+    ],
+    "note": "「豪雷巨烈獣レーザル」は、『勇者ライディーン』において「巨烈獣」に分類されます。"
+  },
+  {
+    "id": 54,
+    "subject": "ガルムス",
+    "work": "超電磁ロボ コン・バトラーV",
+    "displayAnswer": "どれい獣",
+    "acceptedAnswers": [
+      "どれい獣",
+      "奴隷獣"
+    ],
+    "note": "「ガルムス」は、『超電磁ロボ コン・バトラーV』において「どれい獣」に分類されます。"
+  },
+  {
+    "id": 55,
+    "subject": "ドクガガ",
+    "work": "超電磁マシーン ボルテスV",
+    "displayAnswer": "獣士",
+    "acceptedAnswers": [
+      "獣士"
+    ],
+    "note": "「ドクガガ」は、『超電磁マシーン ボルテスV』において「獣士」に分類されます。"
+  },
+  {
+    "id": 56,
+    "subject": "ギルオン",
+    "work": "超電磁マシーン ボルテスV",
+    "displayAnswer": "鎧獣士",
+    "acceptedAnswers": [
+      "鎧獣士"
+    ],
+    "note": "「ギルオン」は、『超電磁マシーン ボルテスV』において「鎧獣士」に分類されます。"
+  },
+  {
+    "id": 57,
+    "subject": "バトルダ",
+    "work": "闘将ダイモス",
+    "displayAnswer": "戦闘ロボ",
+    "acceptedAnswers": [
+      "戦闘ロボ"
+    ],
+    "note": "「バトルダ」は、『闘将ダイモス』において「戦闘ロボ」に分類されます。"
+  },
+  {
+    "id": 58,
+    "subject": "ゾンネカイザー",
+    "work": "闘将ダイモス",
+    "displayAnswer": "メカ戦士",
+    "acceptedAnswers": [
+      "メカ戦士"
+    ],
+    "note": "「ゾンネカイザー」は、『闘将ダイモス』において「メカ戦士」に分類されます。"
+  },
+  {
+    "id": 59,
+    "subject": "ドミラ",
+    "work": "無敵超人ザンボット3",
+    "displayAnswer": "メカ・ブースト",
+    "acceptedAnswers": [
+      "メカブースト",
+      "メカ・ブースト",
+      "Mecha-Boost",
+      "Mecha Boost"
+    ],
+    "note": "「ドミラ」は、『無敵超人ザンボット3』において「メカ・ブースト」に分類されます。"
+  },
+  {
+    "id": 60,
+    "subject": "オセッカイザー",
+    "work": "絶対無敵ライジンオー",
+    "displayAnswer": "邪悪獣",
+    "acceptedAnswers": [
+      "邪悪獣"
+    ],
+    "note": "「オセッカイザー」は、『絶対無敵ライジンオー』において「邪悪獣」に分類されます。"
+  },
+  {
+    "id": 61,
+    "subject": "ヨロイデル",
+    "work": "元気爆発ガンバルガー",
+    "displayAnswer": "魔界獣",
+    "acceptedAnswers": [
+      "魔界獣"
+    ],
+    "note": "「ヨロイデル」は、『元気爆発ガンバルガー』において「魔界獣」に分類されます。"
+  },
+  {
+    "id": 62,
+    "subject": "キラーウォッシャー",
+    "work": "熱血最強ゴウザウラー",
+    "displayAnswer": "機械化獣",
+    "acceptedAnswers": [
+      "機械化獣"
+    ],
+    "note": "「キラーウォッシャー」は、『熱血最強ゴウザウラー』において「機械化獣」に分類されます。"
+  },
+  {
+    "id": 63,
+    "subject": "EI-02",
+    "work": "勇者王ガオガイガー",
+    "displayAnswer": "ゾンダーロボ",
+    "acceptedAnswers": [
+      "ゾンダーロボ",
+      "ゾンダー・ロボ",
+      "Zonder Robo"
+    ],
+    "note": "「EI-02」は、『勇者王ガオガイガー』において「ゾンダーロボ」に分類されます。"
+  },
+  {
+    "id": 64,
+    "subject": "リベル・レギス",
+    "work": "機神咆吼デモンベイン",
+    "displayAnswer": "鬼械神（デウス・マキナ）",
+    "acceptedAnswers": [
+      "鬼械神",
+      "デウスマキナ",
+      "デウス・マキナ",
+      "Deus Machina"
+    ],
+    "note": "「リベル・レギス」は、『機神咆吼デモンベイン』において「鬼械神（デウス・マキナ）」に分類されます。"
+  },
+  {
+    "id": 65,
+    "subject": "ジェフティ",
+    "work": "ZONE OF THE ENDERS",
+    "displayAnswer": "オービタルフレーム（OF）",
+    "acceptedAnswers": [
+      "オービタルフレーム",
+      "オービタル・フレーム",
+      "OF",
+      "Orbital Frame"
+    ],
+    "note": "「ジェフティ」は、『ZONE OF THE ENDERS』において「オービタルフレーム（OF）」に分類されます。"
+  },
+  {
+    "id": 66,
+    "subject": "ゼニス",
+    "work": "FRONT MISSION",
+    "displayAnswer": "ヴァンツァー（WAP）",
+    "acceptedAnswers": [
+      "ヴァンツァー",
+      "WAP",
+      "Wanderpanzer"
+    ],
+    "note": "「ゼニス」は、『FRONT MISSION』において「ヴァンツァー（WAP）」に分類されます。"
+  }
+]

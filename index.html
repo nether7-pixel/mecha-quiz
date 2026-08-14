@@ -1,90 +1,191 @@
 <!doctype html>
 <html lang="ja">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>メカカテゴリ・クイズ</title>
-  <style>
-:root { color-scheme: dark; --bg:#0d1117; --card:#161b22; --line:#30363d; --text:#f0f6fc; --muted:#8b949e; --accent:#58a6ff; --good:#3fb950; --bad:#f85149; }
-*{box-sizing:border-box} body{margin:0;min-height:100vh;background:radial-gradient(circle at top,#172033 0,var(--bg) 45%);color:var(--text);font-family:system-ui,-apple-system,"Hiragino Sans","Yu Gothic UI",sans-serif;display:grid;place-items:center;padding:24px}
-.app{width:min(720px,100%)} .card{background:rgba(22,27,34,.96);border:1px solid var(--line);border-radius:20px;padding:clamp(24px,5vw,48px);box-shadow:0 24px 70px rgba(0,0,0,.35)}
-.hidden{display:none!important}.eyebrow{letter-spacing:.18em;color:var(--accent);font-weight:700;font-size:.78rem}.lead{color:#c9d1d9;line-height:1.8}.rules{margin:22px 0;color:#c9d1d9;line-height:1.7}.rules summary{cursor:pointer;font-weight:700;color:var(--text)}
-label{display:block;margin:18px 0 8px;font-weight:700} select,input,button{font:inherit} select,input{width:100%;background:#0d1117;color:var(--text);border:1px solid var(--line);border-radius:12px;padding:14px 16px}input{font-size:1.1rem} input:focus,select:focus{outline:2px solid var(--accent);outline-offset:2px}
-button{border:0;border-radius:12px;padding:14px 20px;font-weight:800;cursor:pointer}.primary{width:100%;margin-top:16px;background:var(--accent);color:#08111c}.secondary{width:100%;margin-top:14px;background:#21262d;color:var(--text);border:1px solid var(--line)}
-.topbar{display:flex;justify-content:space-between;color:var(--muted);font-weight:700}.progress-track{height:6px;background:#21262d;border-radius:999px;margin:12px 0 34px;overflow:hidden}.progress-track div{height:100%;width:0;background:var(--accent);transition:width .25s}.prompt{text-align:center;color:var(--muted);margin-bottom:10px}#work-title{text-align:center;font-size:clamp(1.6rem,6vw,2.7rem);margin:0 0 34px;line-height:1.35}
-#answer-form{display:grid;grid-template-columns:1fr auto;gap:10px}#answer-form .primary{width:auto;margin:0}.feedback{margin-top:20px;border-radius:12px;padding:16px;line-height:1.7}.feedback.correct{background:rgba(63,185,80,.1);border:1px solid rgba(63,185,80,.5)}.feedback.wrong{background:rgba(248,81,73,.1);border:1px solid rgba(248,81,73,.5)}
-.result-score{text-align:center;font-size:clamp(2rem,10vw,4rem);font-weight:900;margin:26px 0}.mistake{border-top:1px solid var(--line);padding:14px 0}.mistake p{margin:4px 0}.muted{color:var(--muted)}.error{color:#ff7b72;line-height:1.6}.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
-@media(max-width:560px){body{padding:12px}.card{border-radius:16px;padding:24px 18px}#answer-form{grid-template-columns:1fr}#answer-form .primary{width:100%}}
-
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#111827">
+<title>メカ・カテゴリクイズ</title>
+<style>
+:root {
+  --bg:#f3f4f6; --panel:#fff; --text:#111827; --muted:#6b7280;
+  --line:#d1d5db; --accent:#111827; --ok:#166534; --okbg:#dcfce7;
+  --ng:#991b1b; --ngbg:#fee2e2; --skip:#92400e; --skipbg:#fef3c7;
+}
+* { box-sizing:border-box; }
+body {
+  margin:0; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans JP",sans-serif;
+  background:var(--bg); color:var(--text);
+}
+main { max-width:760px; margin:0 auto; padding:24px 16px 56px; }
+h1 { margin:0 0 6px; font-size:clamp(26px,6vw,40px); }
+.subtitle { color:var(--muted); margin:0 0 22px; }
+.card {
+  background:var(--panel); border:1px solid var(--line); border-radius:18px;
+  padding:20px; box-shadow:0 6px 20px rgba(0,0,0,.05); margin-bottom:16px;
+}
+.hidden { display:none !important; }
+.row { display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
+.space { justify-content:space-between; }
+button,select,input {
+  font:inherit; border-radius:12px; border:1px solid var(--line);
+}
+button {
+  padding:12px 16px; cursor:pointer; background:white; color:var(--text); font-weight:700;
+}
+button.primary { background:var(--accent); color:#fff; border-color:var(--accent); }
+button.secondary { background:#fff; }
+button.skip { background:#fff7ed; border-color:#fed7aa; }
+button:disabled { opacity:.5; cursor:not-allowed; }
+select { padding:10px 12px; background:#fff; }
+input {
+  width:100%; padding:15px 14px; font-size:18px; margin:14px 0 10px;
+}
+label { font-weight:700; }
+.stats {
+  display:grid; grid-template-columns:repeat(4,1fr); gap:8px; margin-bottom:14px;
+}
+.stat {
+  background:#fff; border:1px solid var(--line); border-radius:12px; padding:10px;
+  text-align:center;
+}
+.stat strong { display:block; font-size:20px; }
+.stat span { font-size:12px; color:var(--muted); }
+.qid { font-size:13px; color:var(--muted); }
+.subject { font-size:clamp(28px,7vw,44px); font-weight:800; line-height:1.2; margin:12px 0 6px; }
+.work { color:var(--muted); font-size:16px; }
+.prompt { margin-top:18px; font-weight:700; }
+.feedback { border-radius:14px; padding:16px; margin-top:14px; }
+.feedback.ok { background:var(--okbg); color:var(--ok); }
+.feedback.ng { background:var(--ngbg); color:var(--ng); }
+.feedback.skipfb { background:var(--skipbg); color:var(--skip); }
+.answer-line { margin:5px 0; }
+.accepted {
+  color:#374151; font-size:14px; margin-top:8px; word-break:break-word;
+}
+.note {
+  margin-top:12px; padding-top:12px; border-top:1px solid rgba(0,0,0,.12);
+  color:#374151;
+}
+.rules { font-size:14px; line-height:1.75; color:#374151; }
+.rules summary { cursor:pointer; font-weight:800; color:var(--text); }
+.result-score { font-size:42px; font-weight:900; margin:8px 0; }
+.review-item {
+  border-top:1px solid var(--line); padding:14px 0;
+}
+.review-item:first-child { border-top:0; }
+.review-title { font-weight:800; }
+.review-meta { color:var(--muted); font-size:13px; margin:3px 0 7px; }
+.review-your { color:var(--ng); }
+.review-correct { color:var(--ok); }
+.small { color:var(--muted); font-size:13px; }
+footer { text-align:center; color:var(--muted); font-size:12px; margin-top:24px; }
+@media (max-width:520px) {
+  main { padding:16px 12px 44px; }
+  .card { padding:16px; }
+  .stats { grid-template-columns:repeat(2,1fr); }
+  .actions button { flex:1 1 140px; }
+}
 </style>
 </head>
 <body>
-  <main class="app">
-    <section id="start-screen" class="card">
-      <p class="eyebrow">MECHA CATEGORY QUIZ</p>
-      <h1>メカカテゴリ・クイズ</h1>
-      <p class="lead">作品名から、その作品に登場するロボット・機動兵器などの<strong>機体カテゴリ名</strong>を答えてください。</p>
-      <details class="rules">
-        <summary>ルール</summary>
-        <p>「機体カテゴリ名」とは、特定の一機の名前ではなく、複数の機体・機種を包括する作中または公式設定上の名称です。</p>
-        <p>例：『機動戦士ガンダム』→「モビルスーツ」または「MS」</p>
-      </details>
-      <label for="question-count">出題数</label>
-      <select id="question-count">
-        <option value="5">5問</option>
-        <option value="10" selected>10問</option>
-        <option value="20">20問</option>
-        <option value="44">全44問</option>
+<main>
+  <h1>メカ・カテゴリクイズ</h1>
+  <p class="subtitle">そのメカ、設定上は何者？</p>
+
+  <section id="start" class="card">
+    <div class="row space">
+      <label for="count">出題数</label>
+      <select id="count">
+        <option value="10">10問</option>
+        <option value="20" selected>20問</option>
+        <option value="30">30問</option>
+        <option value="all">全66問</option>
       </select>
-      <button id="start-button" class="primary" type="button">ゲーム開始</button>
-      <p id="js-status" class="muted">読み込み中…</p>
-      <p id="load-error" class="error hidden"></p>
-    </section>
+    </div>
+    <p class="small">全66問からランダムに出題します。同じプレイ中に同じ問題は出ません。</p>
+    <button id="startBtn" class="primary" type="button">ゲーム開始</button>
 
-    <section id="quiz-screen" class="card hidden" aria-live="polite">
-      <div class="topbar">
-        <span id="progress">1 / 10</span>
-        <span id="score">正解 0</span>
+    <details class="rules" style="margin-top:18px">
+      <summary>ルールを見る</summary>
+      <p>出題された固有メカ・存在名（登場作品）から、その対象が公式設定上属するカテゴリ名を答えてください。</p>
+      <p>例：ザクII（機動戦士ガンダム） → モビルスーツ（MS）</p>
+      <p>正式名称・略称・一般的な表記違いは原則として正解です。大文字小文字、全角半角、空白、中黒・ハイフンなど、意味を変えない表記揺れは判定時に吸収します。ただし名称そのものの誤記は正解にはしません。</p>
+    </details>
+  </section>
+
+  <section id="game" class="hidden">
+    <div class="stats">
+      <div class="stat"><strong id="progress">1/20</strong><span>問題</span></div>
+      <div class="stat"><strong id="correct">0</strong><span>正解</span></div>
+      <div class="stat"><strong id="wrong">0</strong><span>不正解</span></div>
+      <div class="stat"><strong id="streak">0</strong><span>連続正解</span></div>
+    </div>
+
+    <div class="card">
+      <div id="qid" class="qid">Q001</div>
+      <div id="subject" class="subject"></div>
+      <div id="work" class="work"></div>
+      <div class="prompt">この対象が属するカテゴリ名は？</div>
+      <input id="answer" type="text" autocomplete="off" autocapitalize="off"
+             enterkeyhint="done" placeholder="回答を入力">
+      <div id="answerActions" class="row actions">
+        <button id="submitBtn" class="primary" type="button">回答する</button>
+        <button id="skipBtn" class="skip" type="button">わからない</button>
       </div>
-      <div class="progress-track"><div id="progress-bar"></div></div>
-      <p class="prompt">この作品の機体カテゴリ名は？</p>
-      <h2 id="work-title"></h2>
-      <form id="answer-form" autocomplete="off">
-        <label class="sr-only" for="answer-input">解答</label>
-        <input id="answer-input" type="text" inputmode="text" placeholder="解答を入力" autofocus>
-        <button class="primary" type="submit">回答する</button>
-      </form>
-      <div id="feedback" class="feedback hidden"></div>
-      <button id="next-button" class="secondary hidden">次の問題</button>
-    </section>
 
-    <section id="result-screen" class="card hidden">
-      <p class="eyebrow">RESULT</p>
-      <h1>結果</h1>
-      <p id="result-score" class="result-score"></p>
-      <div id="mistakes"></div>
-      <button id="restart-button" class="primary">もう一度遊ぶ</button>
-    </section>
-  </main>
-  <script>
-let questionBank = [{"id": 1, "work": "機動戦士ガンダム", "answer": "モビルスーツ", "abbreviation": "MS", "source_id": 1}, {"id": 2, "work": "超時空要塞マクロス", "answer": "ヴァリアブル・ファイター（可変戦闘機）", "abbreviation": "VF", "source_id": 2}, {"id": 3, "work": "装甲騎兵ボトムズ", "answer": "アーマードトルーパー", "abbreviation": "AT", "source_id": 3}, {"id": 4, "work": "機動警察パトレイバー", "answer": "レイバー", "abbreviation": null, "source_id": 4}, {"id": 5, "work": "コードギアス 反逆のルルーシュ", "answer": "ナイトメアフレーム", "abbreviation": "KMF", "source_id": 5}, {"id": 6, "work": "フルメタル・パニック！", "answer": "アーム・スレイブ", "abbreviation": "AS", "source_id": 6}, {"id": 7, "work": "戦闘メカ ザブングル", "answer": "ウォーカーマシン", "abbreviation": "WM", "source_id": 7}, {"id": 8, "work": "重戦機エルガイム", "answer": "ヘビーメタル", "abbreviation": "HM", "source_id": 8}, {"id": 9, "work": "聖戦士ダンバイン", "answer": "オーラバトラー", "abbreviation": "AB", "source_id": 9}, {"id": 10, "work": "機甲戦記ドラグナー", "answer": "メタルアーマー", "abbreviation": "MA", "source_id": 10}, {"id": 11, "work": "蒼き流星SPTレイズナー", "answer": "SPT", "abbreviation": "SPT", "source_id": 11}, {"id": 12, "work": "OVERMANキングゲイナー", "answer": "オーバーマン", "abbreviation": null, "source_id": 12}, {"id": 13, "work": "交響詩篇エウレカセブン", "answer": "LFO", "abbreviation": "LFO", "source_id": 13}, {"id": 14, "work": "蒼穹のファフナー", "answer": "ファフナー", "abbreviation": null, "source_id": 14}, {"id": 15, "work": "ブレイク ブレイド", "answer": "ゴゥレム", "abbreviation": null, "source_id": 15}, {"id": 16, "work": "アルドノア・ゼロ", "answer": "カタフラクト", "abbreviation": null, "source_id": 16}, {"id": 17, "work": "ガサラキ", "answer": "タクティカル・アーマー", "abbreviation": "TA", "source_id": 17}, {"id": 18, "work": "86―エイティシックス―", "answer": "フェルドレス", "abbreviation": null, "source_id": 18}, {"id": 19, "work": "ナイツ＆マジック", "answer": "幻晶騎士（シルエットナイト）", "abbreviation": null, "source_id": 19}, {"id": 20, "work": "STAR DRIVER 輝きのタクト", "answer": "サイバディ", "abbreviation": null, "source_id": 20}, {"id": 21, "work": "アイドルマスター XENOGLOSSIA", "answer": "iDOL", "abbreviation": "iDOL", "source_id": 21}, {"id": 22, "work": "銀河機攻隊 マジェスティックプリンス", "answer": "AHSMB（アッシュ）", "abbreviation": "AHSMB", "source_id": 22}, {"id": 23, "work": "グランベルム", "answer": "アルマノクス", "abbreviation": null, "source_id": 23}, {"id": 24, "work": "アクティヴレイド -機動強襲室第八係-", "answer": "ウィルウェア", "abbreviation": null, "source_id": 24}, {"id": 25, "work": "ダーリン・イン・ザ・フランキス", "answer": "FRANXX（フランクス）", "abbreviation": "FRANXX", "source_id": 25}, {"id": 26, "work": "SYNDUALITY Noir", "answer": "クレイドルコフィン", "abbreviation": null, "source_id": 26}, {"id": 27, "work": "ダンボール戦機", "answer": "LBX", "abbreviation": "LBX", "source_id": 29}, {"id": 28, "work": "マブラヴ オルタネイティヴ", "answer": "戦術機", "abbreviation": "TSF", "source_id": 30}, {"id": 29, "work": "ヘヴィーオブジェクト", "answer": "オブジェクト", "abbreviation": null, "source_id": 31}, {"id": 30, "work": "サクガン", "answer": "マークボット", "abbreviation": null, "source_id": 33}, {"id": 31, "work": "バック・アロウ", "answer": "ブライハイト", "abbreviation": null, "source_id": 34}, {"id": 32, "work": "RIDEBACK", "answer": "ライドバック", "abbreviation": null, "source_id": 35}, {"id": 33, "work": "バスカッシュ！", "answer": "ビッグフット", "abbreviation": null, "source_id": 36}, {"id": 34, "work": "アップルシード", "answer": "ランドメイト", "abbreviation": null, "source_id": 37}, {"id": 35, "work": "天空のエスカフローネ", "answer": "ガイメレフ", "abbreviation": null, "source_id": 38}, {"id": 36, "work": "魔神英雄伝ワタル", "answer": "魔神（マシン）", "abbreviation": null, "source_id": 40}, {"id": 37, "work": "機甲界ガリアン", "answer": "機甲兵", "abbreviation": null, "source_id": 41}, {"id": 38, "work": "銀河漂流バイファム", "answer": "ラウンドバーニアン", "abbreviation": "RV", "source_id": 43}, {"id": 39, "work": "ガンパレード・マーチ ～新たなる行軍歌～", "answer": "人型戦車", "abbreviation": null, "source_id": 45}, {"id": 40, "work": "Blue Gender", "answer": "アーマーシュライク", "abbreviation": null, "source_id": 46}, {"id": 41, "work": "翠星のガルガンティア", "answer": "マシンキャリバー", "abbreviation": null, "source_id": 47}, {"id": 42, "work": "クロスアンジュ 天使と竜の輪舞", "answer": "パラメイル", "abbreviation": null, "source_id": 48}, {"id": 43, "work": "シドニアの騎士", "answer": "衛人（もりと）", "abbreviation": null, "source_id": 49}, {"id": 44, "work": "ファイブスター物語", "answer": "ゴティックメード", "abbreviation": "GTM", "source_id": 50}];
-let quiz = [];
-let index = 0;
-let correctCount = 0;
-let results = [];
+      <div id="feedback" class="feedback hidden">
+        <div id="feedbackTitle" style="font-weight:900;font-size:20px"></div>
+        <div id="yourAnswer" class="answer-line"></div>
+        <div id="correctAnswer" class="answer-line"></div>
+        <div id="accepted" class="accepted"></div>
+        <div id="note" class="note"></div>
+      </div>
+
+      <button id="nextBtn" class="primary hidden" type="button" style="margin-top:14px">次の問題</button>
+    </div>
+  </section>
+
+  <section id="result" class="card hidden">
+    <h2 style="margin-top:0">結果</h2>
+    <div id="resultScore" class="result-score"></div>
+    <div id="resultText"></div>
+    <div class="row" style="margin-top:18px">
+      <button id="retryWrongBtn" class="primary hidden" type="button">間違えた問題だけ再挑戦</button>
+      <button id="restartBtn" class="secondary" type="button">最初に戻る</button>
+    </div>
+    <div id="review" style="margin-top:18px"></div>
+  </section>
+
+  <footer>問題IDを添えて報告すると、問題データの修正がしやすくなります。</footer>
+</main>
+
+<script>
+"use strict";
+
+const QUESTIONS = [{"id": 1, "subject": "ザクII", "work": "機動戦士ガンダム", "displayAnswer": "モビルスーツ（MS）", "acceptedAnswers": ["モビルスーツ", "MS", "Mobile Suit"], "note": "「ザクII」は、『機動戦士ガンダム』において「モビルスーツ（MS）」に分類されます。"}, {"id": 2, "subject": "ビグ・ザム", "work": "機動戦士ガンダム", "displayAnswer": "モビルアーマー（MA）", "acceptedAnswers": ["モビルアーマー", "MA", "Mobile Armor"], "note": "「ビグ・ザム」は、『機動戦士ガンダム』において「モビルアーマー（MA）」に分類されます。"}, {"id": 3, "subject": "CGSモビルワーカー", "work": "機動戦士ガンダム 鉄血のオルフェンズ", "displayAnswer": "モビルワーカー（MW）", "acceptedAnswers": ["モビルワーカー", "MW", "Mobile Worker"], "note": "「CGSモビルワーカー」は、『機動戦士ガンダム 鉄血のオルフェンズ』において「モビルワーカー（MW）」に分類されます。"}, {"id": 4, "subject": "VF-1 バルキリー", "work": "超時空要塞マクロス", "displayAnswer": "ヴァリアブル・ファイター（VF）", "acceptedAnswers": ["ヴァリアブルファイター", "ヴァリアブル・ファイター", "可変戦闘機", "VF", "Variable Fighter"], "note": "「VF-1 バルキリー」は、『超時空要塞マクロス』において「ヴァリアブル・ファイター（VF）」に分類されます。"}, {"id": 5, "subject": "MBR-04-Mk.VI トマホーク", "work": "超時空要塞マクロス", "displayAnswer": "デストロイド", "acceptedAnswers": ["デストロイド", "Destroid"], "note": "「MBR-04-Mk.VI トマホーク」は、『超時空要塞マクロス』において「デストロイド」に分類されます。"}, {"id": 6, "subject": "スコープドッグ", "work": "装甲騎兵ボトムズ", "displayAnswer": "アーマードトルーパー（AT）", "acceptedAnswers": ["アーマードトルーパー", "アーマード・トルーパー", "AT", "Armored Trooper", "Armoured Trooper"], "note": "「スコープドッグ」は、『装甲騎兵ボトムズ』において「アーマードトルーパー（AT）」に分類されます。"}, {"id": 7, "subject": "ダグラム", "work": "太陽の牙ダグラム", "displayAnswer": "コンバットアーマー（CA）", "acceptedAnswers": ["コンバットアーマー", "コンバット・アーマー", "CA", "Combat Armor"], "note": "「ダグラム」は、『太陽の牙ダグラム』において「コンバットアーマー（CA）」に分類されます。"}, {"id": 8, "subject": "ザブングル", "work": "戦闘メカ ザブングル", "displayAnswer": "ウォーカーマシン（WM）", "acceptedAnswers": ["ウォーカーマシン", "ウォーカー・マシン", "WM", "Walker Machine"], "note": "「ザブングル」は、『戦闘メカ ザブングル』において「ウォーカーマシン（WM）」に分類されます。"}, {"id": 9, "subject": "エルガイム", "work": "重戦機エルガイム", "displayAnswer": "ヘビーメタル（HM）", "acceptedAnswers": ["ヘビーメタル", "ヘビー・メタル", "HM", "Heavy Metal"], "note": "「エルガイム」は、『重戦機エルガイム』において「ヘビーメタル（HM）」に分類されます。"}, {"id": 10, "subject": "ダンバイン", "work": "聖戦士ダンバイン", "displayAnswer": "オーラバトラー（AB）", "acceptedAnswers": ["オーラバトラー", "オーラ・バトラー", "AB", "Aura Battler"], "note": "「ダンバイン」は、『聖戦士ダンバイン』において「オーラバトラー（AB）」に分類されます。"}, {"id": 11, "subject": "ブブリィ", "work": "聖戦士ダンバイン", "displayAnswer": "オーラボンバー", "acceptedAnswers": ["オーラボンバー", "オーラ・ボンバー", "Aura Bomber"], "note": "「ブブリィ」は、『聖戦士ダンバイン』において「オーラボンバー」に分類されます。"}, {"id": 12, "subject": "ガラバ", "work": "聖戦士ダンバイン", "displayAnswer": "オーラファイター", "acceptedAnswers": ["オーラファイター", "オーラ・ファイター", "Aura Fighter"], "note": "「ガラバ」は、『聖戦士ダンバイン』において「オーラファイター」に分類されます。"}, {"id": 13, "subject": "ゼラーナ", "work": "聖戦士ダンバイン", "displayAnswer": "オーラシップ", "acceptedAnswers": ["オーラシップ", "オーラ・シップ", "Aura Ship"], "note": "「ゼラーナ」は、『聖戦士ダンバイン』において「オーラシップ」に分類されます。"}, {"id": 14, "subject": "バイファム", "work": "銀河漂流バイファム", "displayAnswer": "ラウンドバーニアン（RV）", "acceptedAnswers": ["ラウンドバーニアン", "ラウンド・バーニアン", "RV", "Round Vernian"], "note": "「バイファム」は、『銀河漂流バイファム』において「ラウンドバーニアン（RV）」に分類されます。"}, {"id": 15, "subject": "ドラグナー1", "work": "機甲戦記ドラグナー", "displayAnswer": "メタルアーマー（MA）", "acceptedAnswers": ["メタルアーマー", "メタル・アーマー", "MA", "Metal Armor"], "note": "「ドラグナー1」は、『機甲戦記ドラグナー』において「メタルアーマー（MA）」に分類されます。"}, {"id": 16, "subject": "レイズナー", "work": "蒼き流星SPTレイズナー", "displayAnswer": "SPT", "acceptedAnswers": ["SPT"], "note": "「レイズナー」は、『蒼き流星SPTレイズナー』において「SPT」に分類されます。"}, {"id": 17, "subject": "イングラム1号機", "work": "機動警察パトレイバー", "displayAnswer": "レイバー", "acceptedAnswers": ["レイバー", "Labor"], "note": "「イングラム1号機」は、『機動警察パトレイバー』において「レイバー」に分類されます。"}, {"id": 18, "subject": "雷電", "work": "ガサラキ", "displayAnswer": "タクティカルアーマー（TA）", "acceptedAnswers": ["タクティカルアーマー", "タクティカル・アーマー", "TA", "Tactical Armor"], "note": "「雷電」は、『ガサラキ』において「タクティカルアーマー（TA）」に分類されます。"}, {"id": 19, "subject": "イシュタル", "work": "ガサラキ", "displayAnswer": "メタルフェイク（MF）", "acceptedAnswers": ["メタルフェイク", "メタル・フェイク", "MF", "Metal Fake"], "note": "「イシュタル」は、『ガサラキ』において「メタルフェイク（MF）」に分類されます。"}, {"id": 20, "subject": "ガリアン", "work": "機甲界ガリアン", "displayAnswer": "機甲兵", "acceptedAnswers": ["機甲兵"], "note": "「ガリアン」は、『機甲界ガリアン』において「機甲兵」に分類されます。"}, {"id": 21, "subject": "キングゲイナー", "work": "OVERMANキングゲイナー", "displayAnswer": "オーバーマン", "acceptedAnswers": ["オーバーマン", "Overman"], "note": "「キングゲイナー」は、『OVERMANキングゲイナー』において「オーバーマン」に分類されます。"}, {"id": 22, "subject": "ガチコ", "work": "OVERMANキングゲイナー", "displayAnswer": "シルエット・マシン", "acceptedAnswers": ["シルエットマシン", "シルエット・マシン", "Silhouette Machine"], "note": "「ガチコ」は、『OVERMANキングゲイナー』において「シルエット・マシン」に分類されます。"}, {"id": 23, "subject": "ランスロット", "work": "コードギアス 反逆のルルーシュ", "displayAnswer": "ナイトメアフレーム（KMF）", "acceptedAnswers": ["ナイトメアフレーム", "ナイトメア・フレーム", "KMF", "Knightmare Frame"], "note": "「ランスロット」は、『コードギアス 反逆のルルーシュ』において「ナイトメアフレーム（KMF）」に分類されます。"}, {"id": 24, "subject": "アーバレスト", "work": "フルメタル・パニック！", "displayAnswer": "アーム・スレイブ（AS）", "acceptedAnswers": ["アームスレイブ", "アーム・スレイブ", "AS", "Arm Slave"], "note": "「アーバレスト」は、『フルメタル・パニック！』において「アーム・スレイブ（AS）」に分類されます。"}, {"id": 25, "subject": "ニルヴァーシュ type ZERO", "work": "交響詩篇エウレカセブン", "displayAnswer": "LFO", "acceptedAnswers": ["LFO", "Light Finding Operation"], "note": "「ニルヴァーシュ type ZERO」は、『交響詩篇エウレカセブン』において「LFO」に分類されます。"}, {"id": 26, "subject": "デルフィング", "work": "ブレイク ブレイド", "displayAnswer": "ゴゥレム", "acceptedAnswers": ["ゴゥレム", "ゴーレム"], "note": "「デルフィング」は、『ブレイク ブレイド』において「ゴゥレム」に分類されます。"}, {"id": 27, "subject": "スレイプニール", "work": "アルドノア・ゼロ", "displayAnswer": "カタフラクト", "acceptedAnswers": ["カタフラクト", "Kataphrakt"], "note": "「スレイプニール」は、『アルドノア・ゼロ』において「カタフラクト」に分類されます。"}, {"id": 28, "subject": "レギンレイヴ", "work": "86―エイティシックス―", "displayAnswer": "フェルドレス", "acceptedAnswers": ["フェルドレス", "Feldreß", "Feldress"], "note": "「レギンレイヴ」は、『86―エイティシックス―』において「フェルドレス」に分類されます。"}, {"id": 29, "subject": "イカルガ", "work": "ナイツ＆マジック", "displayAnswer": "幻晶騎士（シルエットナイト）", "acceptedAnswers": ["幻晶騎士", "シルエットナイト", "シルエット・ナイト", "Silhouette Knight"], "note": "「イカルガ」は、『ナイツ＆マジック』において「幻晶騎士（シルエットナイト）」に分類されます。"}, {"id": 30, "subject": "タウバーン", "work": "STAR DRIVER 輝きのタクト", "displayAnswer": "サイバディ", "acceptedAnswers": ["サイバディ", "Cybody"], "note": "「タウバーン」は、『STAR DRIVER 輝きのタクト』において「サイバディ」に分類されます。"}, {"id": 31, "subject": "RED FIVE", "work": "銀河機攻隊 マジェスティックプリンス", "displayAnswer": "AHSMB（アッシュ）", "acceptedAnswers": ["AHSMB", "アッシュ"], "note": "「RED FIVE」は、『銀河機攻隊 マジェスティックプリンス』において「AHSMB（アッシュ）」に分類されます。"}, {"id": 32, "subject": "ストレリチア", "work": "ダーリン・イン・ザ・フランキス", "displayAnswer": "FRANXX（フランクス）", "acceptedAnswers": ["FRANXX", "フランクス"], "note": "「ストレリチア」は、『ダーリン・イン・ザ・フランキス』において「FRANXX（フランクス）」に分類されます。"}, {"id": 33, "subject": "不知火", "work": "マブラヴ オルタネイティヴ", "displayAnswer": "戦術機（TSF）", "acceptedAnswers": ["戦術機", "TSF", "Tactical Surface Fighter"], "note": "「不知火」は、『マブラヴ オルタネイティヴ』において「戦術機（TSF）」に分類されます。"}, {"id": 34, "subject": "チェインバー", "work": "翠星のガルガンティア", "displayAnswer": "マシンキャリバー", "acceptedAnswers": ["マシンキャリバー", "マシン・キャリバー", "Machine Caliber"], "note": "「チェインバー」は、『翠星のガルガンティア』において「マシンキャリバー」に分類されます。"}, {"id": 35, "subject": "継衛", "work": "シドニアの騎士", "displayAnswer": "衛人（もりと）", "acceptedAnswers": ["衛人", "もりと", "モリト"], "note": "「継衛」は、『シドニアの騎士』において「衛人（もりと）」に分類されます。"}, {"id": 36, "subject": "グレイブ", "work": "クロスアンジュ 天使と竜の輪舞", "displayAnswer": "パラメイル", "acceptedAnswers": ["パラメイル", "Para-mail", "Paramail"], "note": "「グレイブ」は、『クロスアンジュ 天使と竜の輪舞』において「パラメイル」に分類されます。"}, {"id": 37, "subject": "インベル", "work": "アイドルマスター XENOGLOSSIA", "displayAnswer": "iDOL（Immortal Defender of Legatee）", "acceptedAnswers": ["iDOL", "IDOL", "アイドル", "Immortal Defender of Legatee", "イモータルディフェンダーオブレガシー", "イモータル・ディフェンダー・オブ・レガシー"], "note": "「インベル」は、『アイドルマスター XENOGLOSSIA』において「iDOL（Immortal Defender of Legatee）」に分類されます。"}, {"id": 38, "subject": "ホワイトリリー", "work": "グランベルム", "displayAnswer": "アルマノクス", "acceptedAnswers": ["アルマノクス", "Armanox"], "note": "「ホワイトリリー」は、『グランベルム』において「アルマノクス」に分類されます。"}, {"id": 39, "subject": "ムガ", "work": "バック・アロウ", "displayAnswer": "ブライハイト", "acceptedAnswers": ["ブライハイト", "Briheight"], "note": "「ムガ」は、『バック・アロウ』において「ブライハイト」に分類されます。"}, {"id": 40, "subject": "ビッグトニー", "work": "サクガン", "displayAnswer": "マークボット", "acceptedAnswers": ["マークボット", "マーク・ボット", "Mark Bot"], "note": "「ビッグトニー」は、『サクガン』において「マークボット」に分類されます。"}, {"id": 41, "subject": "デイジーオーガ", "work": "SYNDUALITY Noir", "displayAnswer": "クレイドルコフィン", "acceptedAnswers": ["クレイドルコフィン", "クレイドル・コフィン", "Cradle Coffin"], "note": "「デイジーオーガ」は、『SYNDUALITY Noir』において「クレイドルコフィン」に分類されます。"}, {"id": 42, "subject": "ビッグオー", "work": "THE ビッグオー", "displayAnswer": "メガデウス", "acceptedAnswers": ["メガデウス", "Megadeus"], "note": "「ビッグオー」は、『THE ビッグオー』において「メガデウス」に分類されます。"}, {"id": 43, "subject": "ラガン", "work": "天元突破グレンラガン", "displayAnswer": "ガンメン", "acceptedAnswers": ["ガンメン", "Ganmen"], "note": "「ラガン」は、『天元突破グレンラガン』において「ガンメン」に分類されます。"}, {"id": 44, "subject": "ダン・オブ・サーズデイ", "work": "ガン×ソード", "displayAnswer": "ヨロイ", "acceptedAnswers": ["ヨロイ"], "note": "「ダン・オブ・サーズデイ」は、『ガン×ソード』において「ヨロイ」に分類されます。"}, {"id": 45, "subject": "龍神丸", "work": "魔神英雄伝ワタル", "displayAnswer": "魔神（マシン）", "acceptedAnswers": ["魔神", "マシン"], "note": "「龍神丸」は、『魔神英雄伝ワタル』において「魔神（マシン）」に分類されます。"}, {"id": 46, "subject": "ガラダK7", "work": "マジンガーZ", "displayAnswer": "機械獣", "acceptedAnswers": ["機械獣"], "note": "「ガラダK7」は、『マジンガーZ』において「機械獣」に分類されます。"}, {"id": 47, "subject": "グラトニオス", "work": "マジンガーZ", "displayAnswer": "戦闘獣", "acceptedAnswers": ["戦闘獣"], "note": "「グラトニオス」は、『マジンガーZ』において「戦闘獣」に分類されます。"}, {"id": 48, "subject": "ギルギル", "work": "UFOロボ グレンダイザー", "displayAnswer": "円盤獣", "acceptedAnswers": ["円盤獣"], "note": "「ギルギル」は、『UFOロボ グレンダイザー』において「円盤獣」に分類されます。"}, {"id": 49, "subject": "キングゴリ", "work": "UFOロボ グレンダイザー", "displayAnswer": "ベガ獣", "acceptedAnswers": ["ベガ獣"], "note": "「キングゴリ」は、『UFOロボ グレンダイザー』において「ベガ獣」に分類されます。"}, {"id": 50, "subject": "サキ", "work": "ゲッターロボ", "displayAnswer": "メカザウルス", "acceptedAnswers": ["メカザウルス"], "note": "「サキ」は、『ゲッターロボ』において「メカザウルス」に分類されます。"}, {"id": 51, "subject": "メカ大輪鬼", "work": "ゲッターロボG", "displayAnswer": "百鬼メカ", "acceptedAnswers": ["百鬼メカ"], "note": "「メカ大輪鬼」は、『ゲッターロボG』において「百鬼メカ」に分類されます。"}, {"id": 52, "subject": "バストドン", "work": "勇者ライディーン", "displayAnswer": "化石獣", "acceptedAnswers": ["化石獣"], "note": "「バストドン」は、『勇者ライディーン』において「化石獣」に分類されます。"}, {"id": 53, "subject": "豪雷巨烈獣レーザル", "work": "勇者ライディーン", "displayAnswer": "巨烈獣", "acceptedAnswers": ["巨烈獣"], "note": "「豪雷巨烈獣レーザル」は、『勇者ライディーン』において「巨烈獣」に分類されます。"}, {"id": 54, "subject": "ガルムス", "work": "超電磁ロボ コン・バトラーV", "displayAnswer": "どれい獣", "acceptedAnswers": ["どれい獣", "奴隷獣"], "note": "「ガルムス」は、『超電磁ロボ コン・バトラーV』において「どれい獣」に分類されます。"}, {"id": 55, "subject": "ドクガガ", "work": "超電磁マシーン ボルテスV", "displayAnswer": "獣士", "acceptedAnswers": ["獣士"], "note": "「ドクガガ」は、『超電磁マシーン ボルテスV』において「獣士」に分類されます。"}, {"id": 56, "subject": "ギルオン", "work": "超電磁マシーン ボルテスV", "displayAnswer": "鎧獣士", "acceptedAnswers": ["鎧獣士"], "note": "「ギルオン」は、『超電磁マシーン ボルテスV』において「鎧獣士」に分類されます。"}, {"id": 57, "subject": "バトルダ", "work": "闘将ダイモス", "displayAnswer": "戦闘ロボ", "acceptedAnswers": ["戦闘ロボ"], "note": "「バトルダ」は、『闘将ダイモス』において「戦闘ロボ」に分類されます。"}, {"id": 58, "subject": "ゾンネカイザー", "work": "闘将ダイモス", "displayAnswer": "メカ戦士", "acceptedAnswers": ["メカ戦士"], "note": "「ゾンネカイザー」は、『闘将ダイモス』において「メカ戦士」に分類されます。"}, {"id": 59, "subject": "ドミラ", "work": "無敵超人ザンボット3", "displayAnswer": "メカ・ブースト", "acceptedAnswers": ["メカブースト", "メカ・ブースト", "Mecha-Boost", "Mecha Boost"], "note": "「ドミラ」は、『無敵超人ザンボット3』において「メカ・ブースト」に分類されます。"}, {"id": 60, "subject": "オセッカイザー", "work": "絶対無敵ライジンオー", "displayAnswer": "邪悪獣", "acceptedAnswers": ["邪悪獣"], "note": "「オセッカイザー」は、『絶対無敵ライジンオー』において「邪悪獣」に分類されます。"}, {"id": 61, "subject": "ヨロイデル", "work": "元気爆発ガンバルガー", "displayAnswer": "魔界獣", "acceptedAnswers": ["魔界獣"], "note": "「ヨロイデル」は、『元気爆発ガンバルガー』において「魔界獣」に分類されます。"}, {"id": 62, "subject": "キラーウォッシャー", "work": "熱血最強ゴウザウラー", "displayAnswer": "機械化獣", "acceptedAnswers": ["機械化獣"], "note": "「キラーウォッシャー」は、『熱血最強ゴウザウラー』において「機械化獣」に分類されます。"}, {"id": 63, "subject": "EI-02", "work": "勇者王ガオガイガー", "displayAnswer": "ゾンダーロボ", "acceptedAnswers": ["ゾンダーロボ", "ゾンダー・ロボ", "Zonder Robo"], "note": "「EI-02」は、『勇者王ガオガイガー』において「ゾンダーロボ」に分類されます。"}, {"id": 64, "subject": "リベル・レギス", "work": "機神咆吼デモンベイン", "displayAnswer": "鬼械神（デウス・マキナ）", "acceptedAnswers": ["鬼械神", "デウスマキナ", "デウス・マキナ", "Deus Machina"], "note": "「リベル・レギス」は、『機神咆吼デモンベイン』において「鬼械神（デウス・マキナ）」に分類されます。"}, {"id": 65, "subject": "ジェフティ", "work": "ZONE OF THE ENDERS", "displayAnswer": "オービタルフレーム（OF）", "acceptedAnswers": ["オービタルフレーム", "オービタル・フレーム", "OF", "Orbital Frame"], "note": "「ジェフティ」は、『ZONE OF THE ENDERS』において「オービタルフレーム（OF）」に分類されます。"}, {"id": 66, "subject": "ゼニス", "work": "FRONT MISSION", "displayAnswer": "ヴァンツァー（WAP）", "acceptedAnswers": ["ヴァンツァー", "WAP", "Wanderpanzer"], "note": "「ゼニス」は、『FRONT MISSION』において「ヴァンツァー（WAP）」に分類されます。"}];
 
 const $ = (id) => document.getElementById(id);
-const normalize = (s) => s.normalize('NFKC').toLowerCase().replace(/[\s・･\-‐‑‒–—―_()（）\[\]［］]/g, '');
 
-function acceptedAnswers(q) {
-  const set = new Set();
-  const add = (s) => { if (s) set.add(normalize(s)); };
-  add(q.answer);
-  add(q.abbreviation);
-  // 括弧付きの模範解答は、括弧の外側・内側も正解として認める
-  const m = q.answer.match(/^(.+?)[（(](.+?)[）)]$/);
-  if (m) { add(m[1]); add(m[2]); }
-  return [...set];
+let session = [];
+let index = 0;
+let correctCount = 0;
+let wrongCount = 0;
+let streak = 0;
+let maxStreak = 0;
+let results = [];
+let answered = false;
+
+function normalize(text) {
+  return String(text ?? "")
+    .normalize("NFKC")
+    .toLowerCase()
+    .replace(/[\s\u3000・･·\.。,:：;；'’"“”`´‐‑‒–—―ーｰ\-_\/\\()（）［］\[\]{}「」『』]/g, "");
+}
+
+function isCorrect(input, q) {
+  const n = normalize(input);
+  if (!n) return false;
+  return q.acceptedAnswers.some(a => normalize(a) === n);
 }
 
 function shuffle(arr) {
@@ -96,84 +197,159 @@ function shuffle(arr) {
   return a;
 }
 
-function loadQuestions() { setupCountOptions(); $('js-status').textContent = '準備完了：44問を読み込みました。'; }
-
-function setupCountOptions() {
-  const select = $('question-count');
-  const choices = [5, 10, 20, questionBank.length].filter((v, i, a) => v <= questionBank.length && a.indexOf(v) === i);
-  select.innerHTML = choices.map(n => `<option value="${n}" ${n===10?'selected':''}>${n === questionBank.length ? `全${n}問` : `${n}問`}</option>`).join('');
+function setScreen(name) {
+  $("start").classList.toggle("hidden", name !== "start");
+  $("game").classList.toggle("hidden", name !== "game");
+  $("result").classList.toggle("hidden", name !== "result");
 }
 
-function startGame() {
-  const count = Number($('question-count').value);
-  quiz = shuffle(questionBank).slice(0, count);
-  index = 0; correctCount = 0; results = [];
-  $('start-screen').classList.add('hidden');
-  $('result-screen').classList.add('hidden');
-  $('quiz-screen').classList.remove('hidden');
-  showQuestion();
+function startGame(customQuestions = null) {
+  if (customQuestions) {
+    session = shuffle(customQuestions);
+  } else {
+    const raw = $("count").value;
+    const n = raw === "all" ? QUESTIONS.length : Number(raw);
+    session = shuffle(QUESTIONS).slice(0, n);
+  }
+  index = 0;
+  correctCount = 0;
+  wrongCount = 0;
+  streak = 0;
+  maxStreak = 0;
+  results = [];
+  setScreen("game");
+  renderQuestion();
 }
 
-function showQuestion() {
-  const q = quiz[index];
-  $('progress').textContent = `${index + 1} / ${quiz.length}`;
-  $('score').textContent = `正解 ${correctCount}`;
-  $('progress-bar').style.width = `${(index / quiz.length) * 100}%`;
-  $('work-title').textContent = q.work;
-  $('answer-input').value = '';
-  $('answer-input').disabled = false;
-  $('answer-form').querySelector('button').disabled = false;
-  $('feedback').className = 'feedback hidden';
-  $('feedback').innerHTML = '';
-  $('next-button').classList.add('hidden');
-  $('answer-input').focus();
+function renderQuestion() {
+  answered = false;
+  const q = session[index];
+  $("progress").textContent = `${index + 1}/${session.length}`;
+  $("correct").textContent = correctCount;
+  $("wrong").textContent = wrongCount;
+  $("streak").textContent = streak;
+  $("qid").textContent = `Q${String(q.id).padStart(3,"0")}`;
+  $("subject").textContent = q.subject;
+  $("work").textContent = `『${q.work}』`;
+  $("answer").value = "";
+  $("answer").disabled = false;
+  $("submitBtn").disabled = false;
+  $("skipBtn").disabled = false;
+  $("answerActions").classList.remove("hidden");
+  $("feedback").className = "feedback hidden";
+  $("nextBtn").classList.add("hidden");
+  $("answer").focus();
 }
 
-function submitAnswer(e) {
-  e.preventDefault();
-  const q = quiz[index];
-  const raw = $('answer-input').value.trim();
-  if (!raw) return;
-  const ok = acceptedAnswers(q).includes(normalize(raw));
-  if (ok) correctCount++;
-  results.push({ q, userAnswer: raw, correct: ok });
-  $('score').textContent = `正解 ${correctCount}`;
-  $('answer-input').disabled = true;
-  $('answer-form').querySelector('button').disabled = true;
-  const f = $('feedback');
-  f.className = `feedback ${ok ? 'correct' : 'wrong'}`;
-  const abbr = q.abbreviation && normalize(q.abbreviation) !== normalize(q.answer) ? `（略称：${q.abbreviation}）` : '';
-  f.innerHTML = `<strong>${ok ? '○ 正解' : '× 不正解'}</strong><br>模範解答：${escapeHtml(q.answer)} ${escapeHtml(abbr)}`;
-  $('next-button').textContent = index === quiz.length - 1 ? '結果を見る' : '次の問題';
-  $('next-button').classList.remove('hidden');
-  $('next-button').focus();
+function finishAnswer(kind) {
+  if (answered) return;
+  answered = true;
+  const q = session[index];
+  const user = $("answer").value.trim();
+  const ok = kind !== "skip" && isCorrect(user, q);
+
+  if (ok) {
+    correctCount++;
+    streak++;
+    maxStreak = Math.max(maxStreak, streak);
+  } else {
+    wrongCount++;
+    streak = 0;
+  }
+
+  results.push({
+    id:q.id, subject:q.subject, work:q.work, displayAnswer:q.displayAnswer,
+    acceptedAnswers:q.acceptedAnswers, note:q.note,
+    userAnswer: kind === "skip" ? "（わからない）" : (user || "（無回答）"),
+    correct:ok, skipped:kind === "skip"
+  });
+
+  $("correct").textContent = correctCount;
+  $("wrong").textContent = wrongCount;
+  $("streak").textContent = streak;
+  $("answer").disabled = true;
+  $("submitBtn").disabled = true;
+  $("skipBtn").disabled = true;
+
+  const fb = $("feedback");
+  fb.classList.remove("hidden","ok","ng","skipfb");
+  fb.classList.add(ok ? "ok" : (kind === "skip" ? "skipfb" : "ng"));
+  $("feedbackTitle").textContent = ok ? "○ 正解！" : (kind === "skip" ? "－ 正解を確認" : "× 不正解");
+  $("yourAnswer").textContent = `あなたの回答：${kind === "skip" ? "わからない" : (user || "無回答")}`;
+  $("correctAnswer").textContent = `正解：${q.displayAnswer}`;
+
+  const variants = q.acceptedAnswers.filter(a => normalize(a) !== normalize(q.displayAnswer));
+  $("accepted").textContent = variants.length
+    ? `正解として認める表記：${variants.join(" ／ ")}`
+    : "登録されている別表記はありません。";
+  $("note").textContent = q.note || "";
+
+  $("answerActions").classList.add("hidden");
+  $("nextBtn").classList.remove("hidden");
+  $("nextBtn").textContent = index === session.length - 1 ? "結果を見る" : "次の問題";
+  $("nextBtn").focus();
 }
 
 function nextQuestion() {
+  if (!answered) return;
   index++;
-  if (index >= quiz.length) return showResult();
-  showQuestion();
+  if (index >= session.length) showResult();
+  else renderQuestion();
 }
 
 function showResult() {
-  $('quiz-screen').classList.add('hidden');
-  $('result-screen').classList.remove('hidden');
-  const pct = Math.round(correctCount / quiz.length * 100);
-  $('result-score').textContent = `${correctCount} / ${quiz.length}（${pct}%）`;
-  const wrong = results.filter(r => !r.correct);
-  $('mistakes').innerHTML = wrong.length
-    ? `<h2>間違えた問題</h2>` + wrong.map(r => `<div class="mistake"><p><strong>${escapeHtml(r.q.work)}</strong></p><p class="muted">あなたの解答：${escapeHtml(r.userAnswer)}</p><p>模範解答：${escapeHtml(r.q.answer)}${r.q.abbreviation ? ` / ${escapeHtml(r.q.abbreviation)}` : ''}</p></div>`).join('')
-    : '<p>全問正解です。</p>';
+  setScreen("result");
+  const pct = Math.round((correctCount / session.length) * 100);
+  $("resultScore").textContent = `${correctCount} / ${session.length}`;
+  $("resultText").textContent = `正答率 ${pct}%　｜　最大連続正解 ${maxStreak}問`;
+
+  const missed = results.filter(r => !r.correct);
+  $("retryWrongBtn").classList.toggle("hidden", missed.length === 0);
+
+  const review = $("review");
+  if (!missed.length) {
+    review.innerHTML = '<p><strong>全問正解です。</strong></p>';
+    return;
+  }
+
+  review.innerHTML = "<h3>間違えた問題</h3>" + missed.map(r => `
+    <div class="review-item">
+      <div class="review-title">${escapeHtml(r.subject)}</div>
+      <div class="review-meta">Q${String(r.id).padStart(3,"0")} ／ 『${escapeHtml(r.work)}』</div>
+      <div class="review-your">あなたの回答：${escapeHtml(r.userAnswer)}</div>
+      <div class="review-correct">正解：${escapeHtml(r.displayAnswer)}</div>
+      <div class="small" style="margin-top:6px">${escapeHtml(r.note || "")}</div>
+    </div>
+  `).join("");
 }
 
-function escapeHtml(s='') { return String(s).replace(/[&<>'"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c])); }
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"})[c]);
+}
 
-$('start-button').addEventListener('click', startGame);
-$('answer-form').addEventListener('submit', submitAnswer);
-$('next-button').addEventListener('click', nextQuestion);
-$('restart-button').addEventListener('click', () => { $('result-screen').classList.add('hidden'); $('start-screen').classList.remove('hidden'); });
-loadQuestions();
+$("startBtn").addEventListener("click", () => startGame());
+$("submitBtn").addEventListener("click", () => {
+  if (!$("answer").value.trim()) {
+    $("answer").focus();
+    return;
+  }
+  finishAnswer("answer");
+});
+$("skipBtn").addEventListener("click", () => finishAnswer("skip"));
+$("nextBtn").addEventListener("click", nextQuestion);
+$("restartBtn").addEventListener("click", () => setScreen("start"));
+$("retryWrongBtn").addEventListener("click", () => {
+  const ids = new Set(results.filter(r => !r.correct).map(r => r.id));
+  startGame(QUESTIONS.filter(q => ids.has(q.id)));
+});
+$("answer").addEventListener("keydown", (e) => {
+  if (e.key === "Enter" && !answered) {
+    e.preventDefault();
+    if ($("answer").value.trim()) finishAnswer("answer");
+  }
+});
 
+console.log(`メカ・カテゴリクイズ：${QUESTIONS.length}問を読み込みました。`);
 </script>
 </body>
 </html>
