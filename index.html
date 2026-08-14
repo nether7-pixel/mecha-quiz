@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>メカカテゴリ・クイズ</title>
+  <style>
+:root { color-scheme: dark; --bg:#0d1117; --card:#161b22; --line:#30363d; --text:#f0f6fc; --muted:#8b949e; --accent:#58a6ff; --good:#3fb950; --bad:#f85149; }
+*{box-sizing:border-box} body{margin:0;min-height:100vh;background:radial-gradient(circle at top,#172033 0,var(--bg) 45%);color:var(--text);font-family:system-ui,-apple-system,"Hiragino Sans","Yu Gothic UI",sans-serif;display:grid;place-items:center;padding:24px}
+.app{width:min(720px,100%)} .card{background:rgba(22,27,34,.96);border:1px solid var(--line);border-radius:20px;padding:clamp(24px,5vw,48px);box-shadow:0 24px 70px rgba(0,0,0,.35)}
+.hidden{display:none!important}.eyebrow{letter-spacing:.18em;color:var(--accent);font-weight:700;font-size:.78rem}.lead{color:#c9d1d9;line-height:1.8}.rules{margin:22px 0;color:#c9d1d9;line-height:1.7}.rules summary{cursor:pointer;font-weight:700;color:var(--text)}
+label{display:block;margin:18px 0 8px;font-weight:700} select,input,button{font:inherit} select,input{width:100%;background:#0d1117;color:var(--text);border:1px solid var(--line);border-radius:12px;padding:14px 16px}input{font-size:1.1rem} input:focus,select:focus{outline:2px solid var(--accent);outline-offset:2px}
+button{border:0;border-radius:12px;padding:14px 20px;font-weight:800;cursor:pointer}.primary{width:100%;margin-top:16px;background:var(--accent);color:#08111c}.secondary{width:100%;margin-top:14px;background:#21262d;color:var(--text);border:1px solid var(--line)}
+.topbar{display:flex;justify-content:space-between;color:var(--muted);font-weight:700}.progress-track{height:6px;background:#21262d;border-radius:999px;margin:12px 0 34px;overflow:hidden}.progress-track div{height:100%;width:0;background:var(--accent);transition:width .25s}.prompt{text-align:center;color:var(--muted);margin-bottom:10px}#work-title{text-align:center;font-size:clamp(1.6rem,6vw,2.7rem);margin:0 0 34px;line-height:1.35}
+#answer-form{display:grid;grid-template-columns:1fr auto;gap:10px}#answer-form .primary{width:auto;margin:0}.feedback{margin-top:20px;border-radius:12px;padding:16px;line-height:1.7}.feedback.correct{background:rgba(63,185,80,.1);border:1px solid rgba(63,185,80,.5)}.feedback.wrong{background:rgba(248,81,73,.1);border:1px solid rgba(248,81,73,.5)}
+.result-score{text-align:center;font-size:clamp(2rem,10vw,4rem);font-weight:900;margin:26px 0}.mistake{border-top:1px solid var(--line);padding:14px 0}.mistake p{margin:4px 0}.muted{color:var(--muted)}.error{color:#ff7b72;line-height:1.6}.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+@media(max-width:560px){body{padding:12px}.card{border-radius:16px;padding:24px 18px}#answer-form{grid-template-columns:1fr}#answer-form .primary{width:100%}}
+
+</style>
+</head>
+<body>
+  <main class="app">
+    <section id="start-screen" class="card">
+      <p class="eyebrow">MECHA CATEGORY QUIZ</p>
+      <h1>メカカテゴリ・クイズ</h1>
+      <p class="lead">作品名から、その作品に登場するロボット・機動兵器などの<strong>機体カテゴリ名</strong>を答えてください。</p>
+      <details class="rules">
+        <summary>ルール</summary>
+        <p>「機体カテゴリ名」とは、特定の一機の名前ではなく、複数の機体・機種を包括する作中または公式設定上の名称です。</p>
+        <p>例：『機動戦士ガンダム』→「モビルスーツ」または「MS」</p>
+      </details>
+      <label for="question-count">出題数</label>
+      <select id="question-count">
+        <option value="5">5問</option>
+        <option value="10" selected>10問</option>
+        <option value="20">20問</option>
+        <option value="44">全44問</option>
+      </select>
+      <button id="start-button" class="primary" type="button">ゲーム開始</button>
+      <p id="js-status" class="muted">読み込み中…</p>
+      <p id="load-error" class="error hidden"></p>
+    </section>
+
+    <section id="quiz-screen" class="card hidden" aria-live="polite">
+      <div class="topbar">
+        <span id="progress">1 / 10</span>
+        <span id="score">正解 0</span>
+      </div>
+      <div class="progress-track"><div id="progress-bar"></div></div>
+      <p class="prompt">この作品の機体カテゴリ名は？</p>
+      <h2 id="work-title"></h2>
+      <form id="answer-form" autocomplete="off">
+        <label class="sr-only" for="answer-input">解答</label>
+        <input id="answer-input" type="text" inputmode="text" placeholder="解答を入力" autofocus>
+        <button class="primary" type="submit">回答する</button>
+      </form>
+      <div id="feedback" class="feedback hidden"></div>
+      <button id="next-button" class="secondary hidden">次の問題</button>
+    </section>
+
+    <section id="result-screen" class="card hidden">
+      <p class="eyebrow">RESULT</p>
+      <h1>結果</h1>
+      <p id="result-score" class="result-score"></p>
+      <div id="mistakes"></div>
+      <button id="restart-button" class="primary">もう一度遊ぶ</button>
+    </section>
+  </main>
+  <script>
+let questionBank = [{"id": 1, "work": "機動戦士ガンダム", "answer": "モビルスーツ", "abbreviation": "MS", "source_id": 1}, {"id": 2, "work": "超時空要塞マクロス", "answer": "ヴァリアブル・ファイター（可変戦闘機）", "abbreviation": "VF", "source_id": 2}, {"id": 3, "work": "装甲騎兵ボトムズ", "answer": "アーマードトルーパー", "abbreviation": "AT", "source_id": 3}, {"id": 4, "work": "機動警察パトレイバー", "answer": "レイバー", "abbreviation": null, "source_id": 4}, {"id": 5, "work": "コードギアス 反逆のルルーシュ", "answer": "ナイトメアフレーム", "abbreviation": "KMF", "source_id": 5}, {"id": 6, "work": "フルメタル・パニック！", "answer": "アーム・スレイブ", "abbreviation": "AS", "source_id": 6}, {"id": 7, "work": "戦闘メカ ザブングル", "answer": "ウォーカーマシン", "abbreviation": "WM", "source_id": 7}, {"id": 8, "work": "重戦機エルガイム", "answer": "ヘビーメタル", "abbreviation": "HM", "source_id": 8}, {"id": 9, "work": "聖戦士ダンバイン", "answer": "オーラバトラー", "abbreviation": "AB", "source_id": 9}, {"id": 10, "work": "機甲戦記ドラグナー", "answer": "メタルアーマー", "abbreviation": "MA", "source_id": 10}, {"id": 11, "work": "蒼き流星SPTレイズナー", "answer": "SPT", "abbreviation": "SPT", "source_id": 11}, {"id": 12, "work": "OVERMANキングゲイナー", "answer": "オーバーマン", "abbreviation": null, "source_id": 12}, {"id": 13, "work": "交響詩篇エウレカセブン", "answer": "LFO", "abbreviation": "LFO", "source_id": 13}, {"id": 14, "work": "蒼穹のファフナー", "answer": "ファフナー", "abbreviation": null, "source_id": 14}, {"id": 15, "work": "ブレイク ブレイド", "answer": "ゴゥレム", "abbreviation": null, "source_id": 15}, {"id": 16, "work": "アルドノア・ゼロ", "answer": "カタフラクト", "abbreviation": null, "source_id": 16}, {"id": 17, "work": "ガサラキ", "answer": "タクティカル・アーマー", "abbreviation": "TA", "source_id": 17}, {"id": 18, "work": "86―エイティシックス―", "answer": "フェルドレス", "abbreviation": null, "source_id": 18}, {"id": 19, "work": "ナイツ＆マジック", "answer": "幻晶騎士（シルエットナイト）", "abbreviation": null, "source_id": 19}, {"id": 20, "work": "STAR DRIVER 輝きのタクト", "answer": "サイバディ", "abbreviation": null, "source_id": 20}, {"id": 21, "work": "アイドルマスター XENOGLOSSIA", "answer": "iDOL", "abbreviation": "iDOL", "source_id": 21}, {"id": 22, "work": "銀河機攻隊 マジェスティックプリンス", "answer": "AHSMB（アッシュ）", "abbreviation": "AHSMB", "source_id": 22}, {"id": 23, "work": "グランベルム", "answer": "アルマノクス", "abbreviation": null, "source_id": 23}, {"id": 24, "work": "アクティヴレイド -機動強襲室第八係-", "answer": "ウィルウェア", "abbreviation": null, "source_id": 24}, {"id": 25, "work": "ダーリン・イン・ザ・フランキス", "answer": "FRANXX（フランクス）", "abbreviation": "FRANXX", "source_id": 25}, {"id": 26, "work": "SYNDUALITY Noir", "answer": "クレイドルコフィン", "abbreviation": null, "source_id": 26}, {"id": 27, "work": "ダンボール戦機", "answer": "LBX", "abbreviation": "LBX", "source_id": 29}, {"id": 28, "work": "マブラヴ オルタネイティヴ", "answer": "戦術機", "abbreviation": "TSF", "source_id": 30}, {"id": 29, "work": "ヘヴィーオブジェクト", "answer": "オブジェクト", "abbreviation": null, "source_id": 31}, {"id": 30, "work": "サクガン", "answer": "マークボット", "abbreviation": null, "source_id": 33}, {"id": 31, "work": "バック・アロウ", "answer": "ブライハイト", "abbreviation": null, "source_id": 34}, {"id": 32, "work": "RIDEBACK", "answer": "ライドバック", "abbreviation": null, "source_id": 35}, {"id": 33, "work": "バスカッシュ！", "answer": "ビッグフット", "abbreviation": null, "source_id": 36}, {"id": 34, "work": "アップルシード", "answer": "ランドメイト", "abbreviation": null, "source_id": 37}, {"id": 35, "work": "天空のエスカフローネ", "answer": "ガイメレフ", "abbreviation": null, "source_id": 38}, {"id": 36, "work": "魔神英雄伝ワタル", "answer": "魔神（マシン）", "abbreviation": null, "source_id": 40}, {"id": 37, "work": "機甲界ガリアン", "answer": "機甲兵", "abbreviation": null, "source_id": 41}, {"id": 38, "work": "銀河漂流バイファム", "answer": "ラウンドバーニアン", "abbreviation": "RV", "source_id": 43}, {"id": 39, "work": "ガンパレード・マーチ ～新たなる行軍歌～", "answer": "人型戦車", "abbreviation": null, "source_id": 45}, {"id": 40, "work": "Blue Gender", "answer": "アーマーシュライク", "abbreviation": null, "source_id": 46}, {"id": 41, "work": "翠星のガルガンティア", "answer": "マシンキャリバー", "abbreviation": null, "source_id": 47}, {"id": 42, "work": "クロスアンジュ 天使と竜の輪舞", "answer": "パラメイル", "abbreviation": null, "source_id": 48}, {"id": 43, "work": "シドニアの騎士", "answer": "衛人（もりと）", "abbreviation": null, "source_id": 49}, {"id": 44, "work": "ファイブスター物語", "answer": "ゴティックメード", "abbreviation": "GTM", "source_id": 50}];
+let quiz = [];
+let index = 0;
+let correctCount = 0;
+let results = [];
+
+const $ = (id) => document.getElementById(id);
+const normalize = (s) => s.normalize('NFKC').toLowerCase().replace(/[\s・･\-‐‑‒–—―_()（）\[\]［］]/g, '');
+
+function acceptedAnswers(q) {
+  const set = new Set();
+  const add = (s) => { if (s) set.add(normalize(s)); };
+  add(q.answer);
+  add(q.abbreviation);
+  // 括弧付きの模範解答は、括弧の外側・内側も正解として認める
+  const m = q.answer.match(/^(.+?)[（(](.+?)[）)]$/);
+  if (m) { add(m[1]); add(m[2]); }
+  return [...set];
+}
+
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function loadQuestions() { setupCountOptions(); $('js-status').textContent = '準備完了：44問を読み込みました。'; }
+
+function setupCountOptions() {
+  const select = $('question-count');
+  const choices = [5, 10, 20, questionBank.length].filter((v, i, a) => v <= questionBank.length && a.indexOf(v) === i);
+  select.innerHTML = choices.map(n => `<option value="${n}" ${n===10?'selected':''}>${n === questionBank.length ? `全${n}問` : `${n}問`}</option>`).join('');
+}
+
+function startGame() {
+  const count = Number($('question-count').value);
+  quiz = shuffle(questionBank).slice(0, count);
+  index = 0; correctCount = 0; results = [];
+  $('start-screen').classList.add('hidden');
+  $('result-screen').classList.add('hidden');
+  $('quiz-screen').classList.remove('hidden');
+  showQuestion();
+}
+
+function showQuestion() {
+  const q = quiz[index];
+  $('progress').textContent = `${index + 1} / ${quiz.length}`;
+  $('score').textContent = `正解 ${correctCount}`;
+  $('progress-bar').style.width = `${(index / quiz.length) * 100}%`;
+  $('work-title').textContent = q.work;
+  $('answer-input').value = '';
+  $('answer-input').disabled = false;
+  $('answer-form').querySelector('button').disabled = false;
+  $('feedback').className = 'feedback hidden';
+  $('feedback').innerHTML = '';
+  $('next-button').classList.add('hidden');
+  $('answer-input').focus();
+}
+
+function submitAnswer(e) {
+  e.preventDefault();
+  const q = quiz[index];
+  const raw = $('answer-input').value.trim();
+  if (!raw) return;
+  const ok = acceptedAnswers(q).includes(normalize(raw));
+  if (ok) correctCount++;
+  results.push({ q, userAnswer: raw, correct: ok });
+  $('score').textContent = `正解 ${correctCount}`;
+  $('answer-input').disabled = true;
+  $('answer-form').querySelector('button').disabled = true;
+  const f = $('feedback');
+  f.className = `feedback ${ok ? 'correct' : 'wrong'}`;
+  const abbr = q.abbreviation && normalize(q.abbreviation) !== normalize(q.answer) ? `（略称：${q.abbreviation}）` : '';
+  f.innerHTML = `<strong>${ok ? '○ 正解' : '× 不正解'}</strong><br>模範解答：${escapeHtml(q.answer)} ${escapeHtml(abbr)}`;
+  $('next-button').textContent = index === quiz.length - 1 ? '結果を見る' : '次の問題';
+  $('next-button').classList.remove('hidden');
+  $('next-button').focus();
+}
+
+function nextQuestion() {
+  index++;
+  if (index >= quiz.length) return showResult();
+  showQuestion();
+}
+
+function showResult() {
+  $('quiz-screen').classList.add('hidden');
+  $('result-screen').classList.remove('hidden');
+  const pct = Math.round(correctCount / quiz.length * 100);
+  $('result-score').textContent = `${correctCount} / ${quiz.length}（${pct}%）`;
+  const wrong = results.filter(r => !r.correct);
+  $('mistakes').innerHTML = wrong.length
+    ? `<h2>間違えた問題</h2>` + wrong.map(r => `<div class="mistake"><p><strong>${escapeHtml(r.q.work)}</strong></p><p class="muted">あなたの解答：${escapeHtml(r.userAnswer)}</p><p>模範解答：${escapeHtml(r.q.answer)}${r.q.abbreviation ? ` / ${escapeHtml(r.q.abbreviation)}` : ''}</p></div>`).join('')
+    : '<p>全問正解です。</p>';
+}
+
+function escapeHtml(s='') { return String(s).replace(/[&<>'"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c])); }
+
+$('start-button').addEventListener('click', startGame);
+$('answer-form').addEventListener('submit', submitAnswer);
+$('next-button').addEventListener('click', nextQuestion);
+$('restart-button').addEventListener('click', () => { $('result-screen').classList.add('hidden'); $('start-screen').classList.remove('hidden'); });
+loadQuestions();
+
+</script>
+</body>
+</html>
